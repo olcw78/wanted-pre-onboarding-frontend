@@ -1,5 +1,5 @@
 import type { MouseEventHandler } from "react";
-import { useLayoutEffect } from "react";
+import { useEffect } from "react";
 import InputItem from "feature/auth/component/InputItem";
 import { httpClient } from "../network/httpClient/httpClient";
 import type {
@@ -28,7 +28,7 @@ const SignInPage = () => {
   const authCtx = useAuthCtx();
   const navigate = useNavigate();
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (authCtx.hasAccessToken()) {
       navigate("/todo");
     }
