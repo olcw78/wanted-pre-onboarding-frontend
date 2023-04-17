@@ -1,40 +1,27 @@
-import {
-  createContext,
-  PropsWithChildren,
-  useContext,
-  useMemo,
-  useState
-} from "react";
+import { createContext, type PropsWithChildren, useContext } from "react";
 
-interface AuthState {
-  accessToken: string | null;
-  hasSignedIn: boolean;
-}
+interface AuthState {}
 
 interface AuthBehaviour {
-  setAccessToken: (newAccessToken: string) => void;
+  accessToken: () => string | null;
+  hasAccessToken: () => boolean;
+  updateAccessToken: (accessToken: string) => void;
 }
 
 const AuthContext = createContext<(AuthState & AuthBehaviour) | null>(null);
 AuthContext.displayName = "[Context] Auth";
 
-export interface AuthContextProviderProps extends PropsWithChildren {
-  overrideInitialValues?: Partial<AuthState>;
-}
-
-export const AuthContextProvider = ({
-  children,
-  overrideInitialValues
-}: AuthContextProviderProps) => {
-  const [accessToken, setAccessToken] = useState<string>(
-    overrideInitialValues?.accessToken || ""
-  );
-  const hasSignedIn = useMemo(() => accessToken !== "", [accessToken]);
+export const AuthContextProvider = ({ children }: PropsWithChildren) => {
+  const updateAccessToken = (accessToken: string) => {
+    localStorage.setItem("access-token", accessToken);
+  };
+  const accessToken = () => localStorage.getItem("access-token");
+  const hasAccessToken = () => accessToken() !== null && accessToken() !== "";
 
   const valueCollection = {
     accessToken,
-    setAccessToken,
-    hasSignedIn
+    hasAccessToken,
+    updateAccessToken
   };
 
   return (
