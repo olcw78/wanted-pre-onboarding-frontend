@@ -1,26 +1,29 @@
-import { createBrowserRouter, RouteObject } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import HomePage from "./home.page";
+
 import SignInPage from "./signIn.page";
 import SignUpPage from "./signup.page";
 import TodosPage from "./todos.page";
+import ErrorRouterPage from "./error/ErrorRouter.page";
 
-const registry: RouteObject[] = [
-  {
-    path: "/",
-    element: <HomePage />
-  },
-  {
-    path: "/signin",
-    element: <SignInPage />
-  },
-  {
-    path: "/signup",
-    element: <SignUpPage />
-  },
-  {
-    path: "/todo",
-    element: <TodosPage />
-  }
-];
-
-export const router = createBrowserRouter(registry);
+const Registry = () => (
+  <Routes>
+    <Route path="/" element={<HomePage />} errorElement={<ErrorRouterPage />} />
+    <Route
+      path="/signin"
+      element={<SignInPage />}
+      errorElement={<ErrorRouterPage />}
+    />
+    <Route
+      path="/signup"
+      element={<SignUpPage />}
+      errorElement={<ErrorRouterPage />}
+    />
+    <Route
+      path="/todo"
+      element={<TodosPage />}
+      errorElement={<ErrorRouterPage />}
+    />
+  </Routes>
+);
+export default Registry;
