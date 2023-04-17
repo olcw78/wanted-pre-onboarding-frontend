@@ -10,7 +10,18 @@ import ErrorPage from "./pages/error/Error.page";
 
 // setup MSW.
 if (process.env.NODE_ENV === "development") {
-  import("./.msw").then((module) => module.clientWorker.start());
+  import("./.msw").then((module) =>
+    module.clientWorker.start({
+      onUnhandledRequest(req, print) {
+        const regex = /.(png|ico)/;
+        if (regex.test(req.url.pathname)) {
+          return;
+        }
+
+        print.warning();
+      }
+    })
+  );
 }
 
 const root = createRoot(document.getElementById("root") as HTMLElement);
