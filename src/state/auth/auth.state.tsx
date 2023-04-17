@@ -19,14 +19,16 @@ const AuthContext = createContext<(AuthState & AuthBehaviour) | null>(null);
 AuthContext.displayName = "[Context] Auth";
 
 export interface AuthContextProviderProps extends PropsWithChildren {
-  overrideInitialValues: Partial<AuthState>;
+  overrideInitialValues?: Partial<AuthState>;
 }
 
 export const AuthContextProvider = ({
   children,
   overrideInitialValues
 }: AuthContextProviderProps) => {
-  const [accessToken, setAccessToken] = useState<string>("");
+  const [accessToken, setAccessToken] = useState<string>(
+    overrideInitialValues?.accessToken || ""
+  );
   const hasSignedIn = useMemo(() => accessToken !== "", [accessToken]);
 
   const valueCollection = {
