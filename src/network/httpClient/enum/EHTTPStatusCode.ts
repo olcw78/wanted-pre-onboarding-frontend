@@ -6,5 +6,6 @@ export enum EHTTPStatusCode {
   UNAUTHORIZED = 401, // lacks valid authentication credentials.
   FORBIDDEN = 403, // not authorised to access this resource.
   NOT_FOUND = 404, // requested resource doesn't exist.
+  TOO_MANY_REQUESTS = 429, // rate-limit exceeded.
   INTERNAL_SERVER_ERROR = 500 // error on the server.
 }
