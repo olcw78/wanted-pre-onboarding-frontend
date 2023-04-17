@@ -12,7 +12,7 @@ interface AuthState {
 }
 
 interface AuthBehaviour {
-  setAccessToken: (newAccessToken: string) => void;
+  updateAccessToken: (accessToken: string) => void;
 }
 
 const AuthContext = createContext<(AuthState & AuthBehaviour) | null>(null);
@@ -30,10 +30,14 @@ export const AuthContextProvider = ({
     overrideInitialValues?.accessToken || ""
   );
   const hasSignedIn = useMemo(() => accessToken !== "", [accessToken]);
+  const updateAccessToken = (accessToken: string) => {
+    localStorage.setItem("access-token", accessToken);
+    setAccessToken(accessToken);
+  };
 
   const valueCollection = {
     accessToken,
-    setAccessToken,
+    updateAccessToken,
     hasSignedIn
   };
 

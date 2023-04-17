@@ -1,18 +1,15 @@
-import type {
-  AxiosInstance,
-  AxiosRequestConfig,
-  AxiosRequestHeaders
-} from "axios";
+import type { AxiosInstance, AxiosRequestConfig } from "axios";
 import axios, { CreateAxiosDefaults } from "axios";
 import { axiosMiddleware } from "./middleware";
 
-export class HttpClient {
+class HttpClient {
   //#region fields
 
   public static defaultCfg: AxiosRequestConfig = {
     headers: {
-      "Content-Type": "application/json"
-    } as AxiosRequestHeaders,
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*"
+    },
     timeout: 10000
   };
 
@@ -23,8 +20,7 @@ export class HttpClient {
   public constructor(configs: CreateAxiosDefaults) {
     const newInstance = axios.create({
       baseURL: configs.baseURL,
-      headers: configs.headers || HttpClient.defaultCfg.headers,
-      withCredentials: true
+      headers: configs.headers || HttpClient.defaultCfg.headers
     });
     this._instance = newInstance;
 
@@ -52,7 +48,7 @@ export class HttpClient {
 
   //#region HTTP methods
 
-  public async get<BodyT extends Object, ResponseT extends Object>(
+  public async get<BodyT extends Object = {}, ResponseT extends Object = {}>(
     url: string,
     requestConfig?: AxiosRequestConfig<BodyT>
   ): Promise<ResponseT> {
@@ -62,27 +58,33 @@ export class HttpClient {
     return request.data as ResponseT;
   }
 
-  public async post<BodyT extends Object, ResponseT extends Object>(
+  public async post<BodyT extends Object = {}, ResponseT extends Object = {}>(
     url: string,
+    data: BodyT,
     requestConfig?: AxiosRequestConfig<BodyT>
   ): Promise<ResponseT> {
-    const request = await this.axios.post(url, requestConfig).catch((err) => {
-      throw err;
-    });
+    const request = await this.axios
+      .post(url, data, requestConfig)
+      .catch((err) => {
+        throw err;
+      });
     return request.data as ResponseT;
   }
 
-  public async put<BodyT extends Object, ResponseT extends Object>(
+  public async put<BodyT extends Object = {}, ResponseT extends Object = {}>(
     url: string,
+    data: BodyT,
     requestConfig?: AxiosRequestConfig<BodyT>
   ): Promise<ResponseT> {
-    const request = await this.axios.put(url, requestConfig).catch((err) => {
-      throw err;
-    });
+    const request = await this.axios
+      .put(url, data, requestConfig)
+      .catch((err) => {
+        throw err;
+      });
     return request.data as ResponseT;
   }
 
-  public async delete<BodyT extends Object, ResponseT extends Object>(
+  public async delete<BodyT extends Object = {}, ResponseT extends Object = {}>(
     url: string,
     requestConfig?: AxiosRequestConfig<BodyT>
   ): Promise<ResponseT> {
@@ -94,3 +96,7 @@ export class HttpClient {
 
   //#endregion HTTP methods
 }
+
+export const httpClient = new HttpClient({
+  baseURL: "https://www.pre-onboarding-selection-task.shop/"
+});
