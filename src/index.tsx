@@ -6,6 +6,7 @@ import { router } from "pages/registry";
 import { ErrorBoundary } from "react-error-boundary";
 import ErrorPage from "pages/Error.page";
 import { AuthContextProvider } from "./state/auth/auth.state";
+import Layout from "layout";
 
 // setup MSW.
 if (process.env.NODE_ENV === "development") {
@@ -17,7 +18,9 @@ root.render(
   <StrictMode>
     <ErrorBoundary FallbackComponent={ErrorPage}>
       <AuthContextProvider>
-        <RouterProvider router={router} />
+        <Layout>
+          <RouterProvider router={router} />
+        </Layout>
       </AuthContextProvider>
     </ErrorBoundary>
   </StrictMode>
