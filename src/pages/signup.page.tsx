@@ -1,49 +1,35 @@
-import {
-  type ChangeEventHandler,
-  MouseEventHandler,
-  useLayoutEffect,
-  useRef,
-  useState
-} from "react";
-import InputItem from "feature/signIn/component/InputItem";
-import { validator } from "../feature/signIn/validator";
+import type { MouseEventHandler } from "react";
+import { useEffect, useLayoutEffect } from "react";
+import InputItem from "feature/auth/component/InputItem";
 import { httpClient } from "../network/httpClient/httpClient";
-import { SignupModelBody } from "../network/spec/auth/model";
+import type { SignupModelBody } from "../network/spec/auth/model";
 import { API_SPEC } from "../network/spec";
+import { useNavigate } from "react-router-dom";
+import { useAuthLocalState } from "../feature/auth/useAuthLocalState";
+import { useAuthCtx } from "../state/auth/auth.state";
 
 const SignUpPage = () => {
-  const emailInputRef = useRef<HTMLInputElement>(null);
-  const [emailInput, setEmailInput] = useState<string>("");
-  const [passwordInput, setPasswordInput] = useState<string>("");
-  const [isValidToSubmit, setValidToSubmit] = useState(false);
+  const {
+    emailInput,
+    emailInputHandler,
+    emailInputRef,
+
+    passwordInput,
+    passwordInputHandler,
+
+    resetInput,
+
+    isValidToSubmit
+  } = useAuthLocalState();
+
+  const navigate = useNavigate();
+  const authCtx = useAuthCtx();
 
   useLayoutEffect(() => {
-    if (!emailInputRef.current) {
-      return;
+    if (authCtx.hasAccessToken()) {
+      navigate("/todo");
     }
-
-    // 페이지 이동시 email input 으로 focus.
-    emailInputRef.current.focus({});
-  }, []);
-
-  const resetInput = () => {
-    setEmailInput("");
-    setPasswordInput("");
-  };
-
-  const emailInputHandler: ChangeEventHandler<HTMLInputElement> = (event) => {
-    const email = event.target.value;
-    setEmailInput(email);
-    setValidToSubmit(validator.validateEmail(email));
-  };
-
-  const passwordInputHandler: ChangeEventHandler<HTMLInputElement> = (
-    event
-  ) => {
-    const password = event.target.value;
-    setPasswordInput(password);
-    setValidToSubmit(validator.validatePassword(password));
-  };
+  }, [authCtx, authCtx.hasAccessToken, navigate]);
 
   const signUpHandler: MouseEventHandler<HTMLButtonElement> = async (event) => {
     event.preventDefault();
@@ -53,13 +39,19 @@ const SignUpPage = () => {
     }
 
     const signUpSpec = API_SPEC.auth.signup;
-    await httpClient.post<SignupModelBody>(signUpSpec.url, {
-      email: emailInput,
-      password: passwordInput
-    });
 
-    // 가입 버튼 누른 후 인풋 초기화.
-    resetInput();
+    try {
+      await httpClient.post<SignupModelBody>(signUpSpec.url, {
+        email: emailInput,
+        password: passwordInput
+      });
+      navigate("/signin");
+    } catch (err) {
+      console.error(err);
+    } finally {
+      // 가입 버튼 누른 후 인풋 초기화.
+      resetInput();
+    }
   };
 
   return (
@@ -93,7 +85,7 @@ const SignUpPage = () => {
         onClick={signUpHandler}
         disabled={!isValidToSubmit}
       >
-        <p className="text-bold text-xl text-white">로그인 하기</p>
+        <p className="text-bold text-xl text-white">회원가입 하기</p>
       </button>
     </div>
   );
