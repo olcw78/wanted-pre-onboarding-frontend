@@ -1,9 +1,9 @@
-import type { SigninModelBodyT, SigninModelResponseT } from "./signinModel";
-import type { SignupModelBodyT, SignupModelResponseT } from "./signupModel";
+import type { SigninModelBody, SigninModelResponse } from "./signinModel";
+import type { SignupModelBody, SignupModelResponse } from "./signupModel";
 
 export {
-  SigninModelBodyT,
-  SigninModelResponseT,
-  SignupModelBodyT,
-  SignupModelResponseT
+  SigninModelBody,
+  SigninModelResponse,
+  SignupModelBody,
+  SignupModelResponse
 };

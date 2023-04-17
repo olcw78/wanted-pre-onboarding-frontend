@@ -1,6 +1,6 @@
-export interface SignupModelBodyT {
+export interface SignupModelBody {
   email: string;
   password: string;
 }
 
-export type SignupModelResponseT = never;
+export type SignupModelResponse = never;

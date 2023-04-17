@@ -1,8 +1,8 @@
-export interface SigninModelBodyT {
+export interface SigninModelBody {
   email: string;
   password: string;
 }
 
-export interface SigninModelResponseT {
+export interface SigninModelResponse {
   readonly access_token: string;
 }
