@@ -1,7 +1,10 @@
 import "./index.css";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import App from "./App";
+import { RouterProvider } from "react-router-dom";
+import { router } from "pages/registry";
+import { ErrorBoundary } from "react-error-boundary";
+import ErrorPage from "pages/Error.page";
 
 // setup MSW.
 if (process.env.NODE_ENV === "development") {
@@ -11,6 +14,8 @@ if (process.env.NODE_ENV === "development") {
 const root = createRoot(document.getElementById("root") as HTMLElement);
 root.render(
   <StrictMode>
-    <App />
+    <ErrorBoundary FallbackComponent={ErrorPage}>
+      <RouterProvider router={router} />
+    </ErrorBoundary>
   </StrictMode>
 );
