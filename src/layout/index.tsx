@@ -1,8 +1,8 @@
-import type { PropsWithChildren } from "react";
+import type { FC, PropsWithChildren } from "react";
 import Footer from "./Footer";
 import Nav from "./Nav";
 
-const Layout = ({ children }: PropsWithChildren) => (
+const Layout: FC<PropsWithChildren> = ({ children }) => (
   <>
     <Nav />
     <section className="container max-auto my-5 w-full px-10 h-screen">

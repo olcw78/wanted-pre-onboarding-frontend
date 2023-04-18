@@ -1,8 +1,12 @@
-export const validator = {
-  validateEmail: function (email: string) {
+export class Validator {
+  /* prevent ctor */
+  private Validator() {}
+
+  public static validateEmail(email: string) {
     return email.includes("@");
-  },
-  validatePassword: function (password: string) {
+  }
+
+  public static validatePassword(password: string) {
     return password.length >= 8;
   }
-};
+}

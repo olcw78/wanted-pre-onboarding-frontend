@@ -1,14 +1,12 @@
-import type { MouseEventHandler } from "react";
+import type { FC, MouseEventHandler } from "react";
 import { useEffect } from "react";
 import InputItem from "feature/auth/component/InputItem";
-import { httpClient } from "../network/httpClient/httpClient";
-import type { SignupModelBody } from "../network/spec/auth/model";
-import { API_SPEC } from "../network/spec";
 import { useNavigate } from "react-router-dom";
 import { useAuthLocalState } from "../feature/auth/useAuthLocalState";
 import { useAuthCtx } from "../state/auth/auth.state";
+import { AuthRequestStatic } from "../network/httpRequest/auth/auth.request";
 
-const SignUpPage = () => {
+const SignUpPage: FC = () => {
   const {
     emailInput,
     emailInputHandler,
@@ -38,13 +36,8 @@ const SignUpPage = () => {
       return;
     }
 
-    const signUpSpec = API_SPEC.auth.signup;
-
     try {
-      await httpClient.post<SignupModelBody>(signUpSpec.url, {
-        email: emailInput,
-        password: passwordInput
-      });
+      await AuthRequestStatic.signUp(emailInput, passwordInput);
       navigate("/signin");
     } catch (err) {
       console.error(err);

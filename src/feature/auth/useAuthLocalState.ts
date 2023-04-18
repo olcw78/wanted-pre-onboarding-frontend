@@ -1,10 +1,10 @@
 import { type ChangeEventHandler, useEffect, useRef, useState } from "react";
-import { validator } from "./validator";
+import { Validator } from "./validator";
 
 export const useAuthLocalState = () => {
   const emailInputRef = useRef<HTMLInputElement>(null);
-  const [emailInput, setEmailInput] = useState<string>("");
-  const [passwordInput, setPasswordInput] = useState<string>("");
+  const [emailInput, setEmailInput] = useState("");
+  const [passwordInput, setPasswordInput] = useState("");
   const [isValidToSubmit, setValidToSubmit] = useState(false);
 
   useEffect(() => {
@@ -28,7 +28,7 @@ export const useAuthLocalState = () => {
   const emailInputHandler: ChangeEventHandler<HTMLInputElement> = (event) => {
     const email = event.target.value;
     setEmailInput(email);
-    setValidToSubmit(validator.validateEmail(email));
+    setValidToSubmit(Validator.validateEmail(email));
   };
 
   const passwordInputHandler: ChangeEventHandler<HTMLInputElement> = (
@@ -36,7 +36,7 @@ export const useAuthLocalState = () => {
   ) => {
     const password = event.target.value;
     setPasswordInput(password);
-    setValidToSubmit(validator.validatePassword(password));
+    setValidToSubmit(Validator.validatePassword(password));
   };
 
   return {

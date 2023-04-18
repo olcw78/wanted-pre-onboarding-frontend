@@ -3,8 +3,8 @@ export interface CreateTodoModelBody {
 }
 
 export interface CreateTodoModelResponse {
-  readonly id: number;
+  id: number;
   todo: string;
   isCompleted: boolean;
-  readonly userId: number;
+  userId: number;
 }

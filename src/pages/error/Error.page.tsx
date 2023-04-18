@@ -1,6 +1,7 @@
 import type { FallbackProps } from "react-error-boundary";
+import type { FC } from "react";
 
-const ErrorPage = ({ error, resetErrorBoundary }: FallbackProps) => (
+const ErrorPage: FC<FallbackProps> = ({ error, resetErrorBoundary }) => (
   <div role="alert">
     <p>Error Has Occurred!</p>
     <pre style={{ color: "red" }}>{error.message}</pre>

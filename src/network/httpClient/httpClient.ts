@@ -1,5 +1,5 @@
 import type { AxiosInstance, AxiosRequestConfig } from "axios";
-import axios, { CreateAxiosDefaults } from "axios";
+import axios, { type CreateAxiosDefaults } from "axios";
 import { axiosMiddleware } from "./middleware";
 
 class HttpClient {

@@ -1,4 +1,6 @@
-const Footer = () => (
+import type { FC } from "react";
+
+const Footer: FC = () => (
   <div className="w-full h-[120px] bg-slate-100 flex flex-row items-center px-20">
     <div className="flex flex-col justify-center gap-x-3">
       <p className="flex flex-row items-center">

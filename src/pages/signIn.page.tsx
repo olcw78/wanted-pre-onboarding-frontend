@@ -1,17 +1,12 @@
-import type { MouseEventHandler } from "react";
+import type { FC, MouseEventHandler } from "react";
 import { useEffect } from "react";
 import InputItem from "feature/auth/component/InputItem";
-import { httpClient } from "../network/httpClient/httpClient";
-import type {
-  SigninModelBody,
-  SigninModelResponse
-} from "../network/spec/auth/model";
-import { API_SPEC } from "../network/spec";
 import { useAuthLocalState } from "../feature/auth/useAuthLocalState";
 import { useAuthCtx } from "../state/auth/auth.state";
 import { useNavigate } from "react-router-dom";
+import { AuthRequestStatic } from "../network/httpRequest/auth/auth.request";
 
-const SignInPage = () => {
+const SignInPage: FC = () => {
   const {
     emailInput,
     emailInputHandler,
@@ -41,16 +36,14 @@ const SignInPage = () => {
       return;
     }
 
-    const signInSpec = API_SPEC.auth.signin;
     try {
-      const { access_token } = await httpClient.post<
-        SigninModelBody,
-        SigninModelResponse
-      >(signInSpec.url, {
-        email: emailInput,
-        password: passwordInput
-      });
-      authCtx.updateAccessToken(access_token);
+      const response = await AuthRequestStatic.signIn(
+        emailInput,
+        passwordInput
+      );
+
+      authCtx.updateAccessToken(response.access_token);
+
       navigate("/todo");
     } catch (err) {
       console.error(err);
@@ -66,7 +59,7 @@ const SignInPage = () => {
         <p className="text-4xl text-bold">로그인</p>
       </div>
 
-      <section className="mb-10 px-5 py-3 rounded-md bg-amber-200 ">
+      <section className="mb-10 px-5 py-3 rounded-md bg-amber-200">
         <InputItem
           label="E-mail"
           inputValue={emailInput}

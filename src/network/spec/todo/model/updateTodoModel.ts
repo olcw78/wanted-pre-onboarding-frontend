@@ -4,6 +4,4 @@ export interface UpdateTodoModelBody {
 }
 
 export interface UpdateTodoModelResponse
-  extends Pick<UpdateTodoModelBody, "todo" | "isCompleted"> {
-  //
-}
+  extends Pick<UpdateTodoModelBody, "todo" | "isCompleted"> {}

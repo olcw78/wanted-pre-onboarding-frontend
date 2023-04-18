@@ -4,5 +4,5 @@ export interface SigninModelBody {
 }
 
 export interface SigninModelResponse {
-  readonly access_token: string;
+  access_token: string;
 }

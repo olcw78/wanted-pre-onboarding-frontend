@@ -1,8 +1,8 @@
-import type { MouseEventHandler } from "react";
+import type { FC, MouseEventHandler } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { navItems } from "./navItems";
 
-const Nav = () => {
+const Nav: FC = () => {
   const navigate = useNavigate();
 
   const imgClickHandler: MouseEventHandler<HTMLButtonElement> = () => {
