@@ -66,11 +66,29 @@ const TodosPage: FC = () => {
     newTodoInputRef?.current?.focus();
   };
 
-  const editTodo = (id: number) => {
+  const editTodoHandler = (id: number, newTodo: string) => {
     const foundIdx = todos.findIndex((todo) => todo.id === id);
     if (foundIdx === -1) {
       return;
     }
+
+    setTodos([
+      ...todos.slice(0, foundIdx),
+      {
+        ...todos[foundIdx],
+        todo: newTodo
+      },
+      ...todos.slice(foundIdx + 1)
+    ]);
+  };
+
+  const deleteTodoHandler = (id: number) => {
+    const foundIdx = todos.findIndex((todo) => todo.id === id);
+    if (foundIdx === -1) {
+      return;
+    }
+
+    setTodos([...todos.slice(0, foundIdx), ...todos.slice(foundIdx + 1)]);
   };
 
   console.log(todos);
@@ -104,7 +122,9 @@ const TodosPage: FC = () => {
         {todos?.map((todo, i) => (
           <TodoItem
             key={todo.id}
-            onToggle={toggleHandler}
+            onToggleCompleted={toggleHandler}
+            onEditTodo={editTodoHandler}
+            onDeleteTodo={deleteTodoHandler}
             className="my-2"
             {...todo}
           />
