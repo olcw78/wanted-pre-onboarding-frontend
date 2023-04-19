@@ -21,6 +21,7 @@ export const useTodoState = (
     }
 
     navigate("/signin");
+    // eslint-disable-next-line
   }, []);
 
   // 페이지 열면 인풋 필드로 focus.
