@@ -9,35 +9,29 @@ const SignUpPage = lazy(() => import("./signup.page"));
 const TodosPage = lazy(() => import("./todos.page"));
 
 const Registry = () => (
-  <Routes>
-    <Route path="/" element={<HomePage />} errorElement={<ErrorRouterPage />} />
-    <Route
-      path="/signin"
-      element={
-        <Suspense fallback={<div>Loading...</div>}>
-          <SignInPage />
-        </Suspense>
-      }
-      errorElement={<ErrorRouterPage />}
-    />
-    <Route
-      path="/signup"
-      element={
-        <Suspense fallback={<div>Loading...</div>}>
-          <SignUpPage />
-        </Suspense>
-      }
-      errorElement={<ErrorRouterPage />}
-    />
-    <Route
-      path="/todo"
-      element={
-        <Suspense fallback={<div>Loading...</div>}>
-          <TodosPage />
-        </Suspense>
-      }
-      errorElement={<ErrorRouterPage />}
-    />
-  </Routes>
+  <Suspense fallback={<div>Loading...</div>}>
+    <Routes>
+      <Route
+        path="/"
+        element={<HomePage />}
+        errorElement={<ErrorRouterPage />}
+      />
+      <Route
+        path="/signin"
+        element={<SignInPage />}
+        errorElement={<ErrorRouterPage />}
+      />
+      <Route
+        path="/signup"
+        element={<SignUpPage />}
+        errorElement={<ErrorRouterPage />}
+      />
+      <Route
+        path="/todo"
+        element={<TodosPage />}
+        errorElement={<ErrorRouterPage />}
+      />
+    </Routes>
+  </Suspense>
 );
 export default Registry;
