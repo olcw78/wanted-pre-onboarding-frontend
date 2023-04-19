@@ -11,7 +11,6 @@
 - msw (api request mocking)
 - react-error-boundary
 - tailwindcss
-- react-testing-library
 - source-map-explorer (bundle analysis)
 
 ## 프로젝트 실행
@@ -22,6 +21,8 @@ npm install & npm start
 ```
 
 ## 배포 주소
+
+#### http://wanted-preonboarding-assignment-lee-yoonsang.s3-website.ap-northeast-2.amazonaws.com
 
 ## 프로젝트 구조 설명
 
@@ -40,6 +41,11 @@ npm install & npm start
  
  state - shared 상태.
 ```
+
+## CD
+
+- Github Action -> "deploy" branch on push 에 trigger.
+- AWS S3 의 static website hosting 이용.
 
 ## Bundle Analysis
 
