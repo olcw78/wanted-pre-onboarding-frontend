@@ -94,7 +94,7 @@ const TodosPage: FC = () => {
   console.log(todos);
 
   return (
-    <div>
+    <div className="flex flex-col justify-center">
       <section className="mb-5 bg-slate-200 px-5 py-3 rounded-md mx-auto">
         {/* 새 Todo 항목 인풋 필드 */}
         <input
