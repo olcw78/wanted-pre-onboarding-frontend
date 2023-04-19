@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { TodoModel } from "network/spec/todo/model/TodoModel";
 import { TodosRequestStatic } from "../../network/httpRequest/todos/todos.request";
+import { useNavigate } from "react-router-dom";
+import { useAuthCtx } from "../../state/auth/auth.state";
 
 export const useTodoState = (
   newTodoInput: string,
@@ -9,6 +11,17 @@ export const useTodoState = (
   const [todos, setTodos] = useState<Array<TodoModel>>([]);
   const [isFetching, setFetching] = useState(false);
   const newTodoInputRef = useRef<HTMLInputElement>(null);
+  const authCtx = useAuthCtx();
+  const navigate = useNavigate();
+
+  // accessToken 없으면 sign-in 으로 이동
+  useEffect(() => {
+    if (authCtx.hasAccessToken()) {
+      return;
+    }
+
+    navigate("/signin");
+  }, []);
 
   // 페이지 열면 인풋 필드로 focus.
   useEffect(() => {
