@@ -15,6 +15,7 @@ const Footer: FC = () => (
       <a
         href={"https://github.com/olcw78/wanted-pre-onboarding-frontend"}
         target="_blank"
+        rel="noopener noreferrer"
         className="mt-3"
       >
         <p>
