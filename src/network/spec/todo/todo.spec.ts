@@ -1,5 +1,3 @@
-import { faker } from "@faker-js/faker";
-
 export const todoSpec = {
   // 1. create a todo
   todos: {
@@ -11,7 +9,7 @@ export const todoSpec = {
         Authorization: (accessToken: string) => `Bearer ${accessToken}`
       },
       data: {
-        todo: faker.helpers.arrayElements([])
+        todo: []
       }
     },
     getTodos: {

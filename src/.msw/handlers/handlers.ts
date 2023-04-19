@@ -63,29 +63,27 @@ export const handlers = [
       return res(
         ctx.delay(1000),
         ctx.status(EHTTPStatusCode.SUCCEED),
-        ctx.json({
-          items: [
-            {
-              id: 1,
-              todo: "과제하기",
-              isCompleted: false,
-              userId: 1
-            },
-            {
-              id: 1,
-              todo: "과제하기",
-              isCompleted: false,
-              userId: 1
-            }
-          ]
-        })
+        ctx.json([
+          {
+            id: 1,
+            todo: "과제하기",
+            isCompleted: false,
+            userId: 1
+          },
+          {
+            id: 1,
+            todo: "과제하기",
+            isCompleted: false,
+            userId: 1
+          }
+        ])
       );
     }
   ),
 
   // update todos
   rest.put<UpdateTodoModelBody, PathParams, UpdateTodoModelResponse>(
-    API_SPEC.todos.updateTodo.url,
+    API_SPEC.todos.updateTodo.url(1),
     (req, res, ctx) => {
       return res(
         ctx.delay(1000),
@@ -102,7 +100,7 @@ export const handlers = [
 
   // delete todos
   rest.delete<DeleteTodoModelBody>(
-    API_SPEC.todos.deleteTodo.url,
+    API_SPEC.todos.deleteTodo.url(1),
     (req, res, ctx) => {
       return res(ctx.delay(1000), ctx.status(EHTTPStatusCode.NO_CONTENT));
     }
