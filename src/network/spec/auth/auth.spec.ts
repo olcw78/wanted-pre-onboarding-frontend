@@ -1,5 +1,3 @@
-import { faker } from "@faker-js/faker";
-
 export const authSpec = {
   auth: {
     // 1. sign up
@@ -10,8 +8,8 @@ export const authSpec = {
         "Content-Type": "application/json"
       },
       data: {
-        email: faker.internet.email(),
-        password: faker.internet.password()
+        email: "testtest@gg.gg",
+        password: "123123123"
       }
     },
 
@@ -23,8 +21,8 @@ export const authSpec = {
         "Content-Type": "application/json"
       },
       data: {
-        email: faker.internet.email(),
-        password: faker.internet.password()
+        email: "testtest@gg.gg",
+        password: "123123123"
       }
     }
   }

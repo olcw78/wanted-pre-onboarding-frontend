@@ -8,10 +8,11 @@
 - react.js (cra)
 - react-router-dom
 - axios
-- msw
+- msw (api request mocking)
 - react-error-boundary
 - tailwindcss
 - react-testing-library
+- source-map-explorer (bundle analysis)
 
 ## 프로젝트 실행
 
@@ -39,3 +40,13 @@ npm install & npm start
  
  state - shared 상태.
 ```
+
+## Bundle Analysis
+
+![bundle analysis](./md/bundle-size-optimization.png)
+
+- 좌: @faker-js/faker 사용 시 번들 사이즈 - 3.8mb
+- 우: 제거 후 번들사이즈 - 238.5kb
+- 차이 : 3.56mb..
+
+### faker (+ 다른 dev library) 는 production 에서 잘 뺍시다.

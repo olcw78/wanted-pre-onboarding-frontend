@@ -5,6 +5,7 @@ interface InputItemProps
   label: string;
   inputValue: string;
   testId: string;
+  type?: HTMLInputElement["type"];
   inputRef?: RefObject<HTMLInputElement>;
   inputHandler: (event: ChangeEvent<HTMLInputElement>) => void;
 }
@@ -12,9 +13,10 @@ interface InputItemProps
 const InputItem: FC<Readonly<InputItemProps>> = ({
   label,
   inputValue,
-  inputHandler,
   testId,
+  type = "text",
   inputRef,
+  inputHandler,
   className
 }) => {
   return (
@@ -23,7 +25,7 @@ const InputItem: FC<Readonly<InputItemProps>> = ({
     >
       <p className="w-20 text-xl font-bold">{label}</p>
       <input
-        type="text"
+        type={type}
         data-testid={testId}
         className="border border-1 border-slate-300 rounded-lg w-[20vw]"
         value={inputValue}
