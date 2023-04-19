@@ -9,6 +9,8 @@ const TodosPage: FC = () => {
     setNewTodoInput(event.target.value);
   };
 
+  const resetNewTodoInput = () => setNewTodoInput("");
+
   const {
     todos,
     isFetching,
@@ -16,9 +18,9 @@ const TodosPage: FC = () => {
 
     addNewTodoHandler,
     editTodoHandler,
-    toggleHandler,
+    toggleCompletedHandler,
     deleteTodoHandler
-  } = useTodoState(newTodoInput, setNewTodoInput);
+  } = useTodoState(newTodoInput, resetNewTodoInput);
 
   if (process.env.NODE_ENV === "development") {
     console.log(todos);
@@ -66,7 +68,7 @@ const TodosPage: FC = () => {
           todos?.map((todo) => (
             <TodoItem
               key={todo.id}
-              onToggleCompleted={toggleHandler}
+              onToggleCompleted={toggleCompletedHandler}
               onEditTodo={editTodoHandler}
               onDeleteTodo={deleteTodoHandler}
               className="my-2 overflow-hidden"

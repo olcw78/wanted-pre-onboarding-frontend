@@ -1,17 +1,10 @@
-import {
-  type Dispatch,
-  type SetStateAction,
-  useCallback,
-  useEffect,
-  useRef,
-  useState
-} from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { TodoModel } from "network/spec/todo/model/TodoModel";
 import { TodosRequestStatic } from "../../network/httpRequest/todos/todos.request";
 
 export const useTodoState = (
   newTodoInput: string,
-  setNewTodoInput: Dispatch<SetStateAction<string>>
+  resetNewTodoInput: () => void
 ) => {
   const [todos, setTodos] = useState<Array<TodoModel>>([]);
   const [isFetching, setFetching] = useState(false);
@@ -22,6 +15,7 @@ export const useTodoState = (
     newTodoInputRef?.current?.focus();
   }, [newTodoInputRef]);
 
+  // 첫 todos fetching.
   useEffect(() => {
     (async () => {
       try {
@@ -37,7 +31,9 @@ export const useTodoState = (
     })();
   }, []);
 
-  const toggleHandler = useCallback(
+  // completed 여부 토글 핸들러.
+  // newTodoInput 갱신마다 re-evaluate 막기 위해 useCallback 사용.
+  const toggleCompletedHandler = useCallback(
     async (id: number) => {
       const foundIdx = todos.findIndex((todo) => todo.id === id);
       if (foundIdx === -1) {
@@ -72,6 +68,7 @@ export const useTodoState = (
     [todos]
   );
 
+  // 새 todo 항목 추가 핸들러.
   const addNewTodoHandler = async () => {
     try {
       setFetching(true);
@@ -88,11 +85,12 @@ export const useTodoState = (
       setFetching(false);
 
       // 인풋필드 정리.
-      setNewTodoInput("");
+      resetNewTodoInput();
       newTodoInputRef?.current?.focus();
     }
   };
 
+  // todo 내용 수정 핸들러.
   const editTodoHandler = useCallback(
     async (id: number, newTodo: string) => {
       if (newTodo === "") {
@@ -131,6 +129,7 @@ export const useTodoState = (
     [todos]
   );
 
+  // todo 항목 삭제 핸들러.
   const deleteTodoHandler = useCallback(
     async (id: number) => {
       const foundIdx = todos.findIndex((todo) => todo.id === id);
@@ -164,7 +163,7 @@ export const useTodoState = (
 
     addNewTodoHandler,
     editTodoHandler,
-    toggleHandler,
+    toggleCompletedHandler,
     deleteTodoHandler
   };
 };
