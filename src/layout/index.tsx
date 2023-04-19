@@ -5,7 +5,7 @@ import Nav from "./Nav";
 const Layout: FC<PropsWithChildren> = ({ children }) => (
   <>
     <Nav />
-    <section className="container max-auto my-5 w-full px-10 h-screen">
+    <section className="container mx-auto my-5 w-full px-10 min-h-screen">
       {children}
     </section>
     <Footer />

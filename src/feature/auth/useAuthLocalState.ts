@@ -8,11 +8,7 @@ export const useAuthLocalState = () => {
   const [isValidToSubmit, setValidToSubmit] = useState(false);
 
   useEffect(() => {
-    if (!emailInputRef) {
-      return;
-    }
-
-    if (!emailInputRef.current) {
+    if (!emailInputRef?.current) {
       return;
     }
 

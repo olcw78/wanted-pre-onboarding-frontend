@@ -8,7 +8,7 @@ export const todoSpec = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer`
+        Authorization: (accessToken: string) => `Bearer ${accessToken}`
       },
       data: {
         todo: faker.helpers.arrayElements([])
@@ -18,19 +18,18 @@ export const todoSpec = {
       url: "/todos",
       method: "GET",
       headers: {
-        Authorization: `Bearer`
+        Authorization: (accessToken: string) => `Bearer ${accessToken}`
       }
     },
     updateTodo: {
-      url: "/todos/:id",
-      method: "PUT",
-      headers: {}
+      url: (id: number) => `/todos/${id}`,
+      method: "PUT"
     },
     deleteTodo: {
-      url: "/todos/:id",
+      url: (id: number) => `/todos/${id}`,
       method: "DELETE",
       headers: {
-        Authorization: `Bearer`
+        Authorization: (accessToken: string) => `Bearer ${accessToken}`
       }
     }
   }

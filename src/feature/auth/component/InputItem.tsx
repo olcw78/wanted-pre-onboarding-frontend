@@ -21,7 +21,7 @@ const InputItem: FC<Readonly<InputItemProps>> = ({
     <div
       className={"flex flex-row items-center gap-x-10 ".concat(className || "")}
     >
-      <p className="w-20 text-xl text-bold">{label}</p>
+      <p className="w-20 text-xl font-bold">{label}</p>
       <input
         type="text"
         data-testid={testId}
