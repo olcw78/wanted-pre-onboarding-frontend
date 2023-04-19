@@ -1,27 +1,41 @@
 import { Route, Routes } from "react-router-dom";
-import HomePage from "./home.page";
+import { lazy, Suspense } from "react";
 
-import SignInPage from "./signIn.page";
-import SignUpPage from "./signup.page";
-import TodosPage from "./todos.page";
+import HomePage from "./home.page";
 import ErrorRouterPage from "./error/ErrorRouter.page";
+
+const SignInPage = lazy(() => import("./signin.page"));
+const SignUpPage = lazy(() => import("./signup.page"));
+const TodosPage = lazy(() => import("./todos.page"));
 
 const Registry = () => (
   <Routes>
     <Route path="/" element={<HomePage />} errorElement={<ErrorRouterPage />} />
     <Route
       path="/signin"
-      element={<SignInPage />}
+      element={
+        <Suspense fallback={<div>Loading...</div>}>
+          <SignInPage />
+        </Suspense>
+      }
       errorElement={<ErrorRouterPage />}
     />
     <Route
       path="/signup"
-      element={<SignUpPage />}
+      element={
+        <Suspense fallback={<div>Loading...</div>}>
+          <SignUpPage />
+        </Suspense>
+      }
       errorElement={<ErrorRouterPage />}
     />
     <Route
       path="/todo"
-      element={<TodosPage />}
+      element={
+        <Suspense fallback={<div>Loading...</div>}>
+          <TodosPage />
+        </Suspense>
+      }
       errorElement={<ErrorRouterPage />}
     />
   </Routes>
