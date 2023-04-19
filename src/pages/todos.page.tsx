@@ -26,6 +26,10 @@ const TodosPage: FC = () => {
 
   return (
     <div className="flex flex-col flex-1 justify-center min-h-full">
+      <div className="my-8 flex justify-center">
+        <p className="text-4xl font-bold">투두 리스트</p>
+      </div>
+
       <section className="mb-5 bg-slate-200 px-5 py-3 rounded-md mx-auto">
         {/* 새 Todo 항목 인풋 필드 */}
         <input

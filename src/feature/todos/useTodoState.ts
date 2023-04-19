@@ -95,6 +95,10 @@ export const useTodoState = (
 
   const editTodoHandler = useCallback(
     async (id: number, newTodo: string) => {
+      if (newTodo === "") {
+        return;
+      }
+
       const foundIdx = todos.findIndex((todo) => todo.id === id);
       if (foundIdx === -1) {
         return;
