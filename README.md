@@ -44,8 +44,8 @@ npm install & npm start
 ## Bundle Analysis
 
 ![bundle analysis](./md/bundle-size-optimization.png)
-
-- 좌: @faker-js/faker 사용 시 번들 사이즈 - 3.8mb
+![bundle analysis detail](./md/size-detail.png)
+- 좌: @faker-js/faker 사용 시 번들 사이즈 - 3.8mb (자동으로 제거 안됨!)
 - 우: 제거 후 번들사이즈 - 238.5kb
 - 차이 : 3.56mb..
 
