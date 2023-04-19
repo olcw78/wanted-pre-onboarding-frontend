@@ -71,6 +71,7 @@ const SignInPage: FC = () => {
 
         <InputItem
           label="Password"
+          type="password"
           inputValue={passwordInput}
           inputHandler={passwordInputHandler}
           testId="password-input"
