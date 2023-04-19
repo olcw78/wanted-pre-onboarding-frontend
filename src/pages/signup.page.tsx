@@ -50,7 +50,7 @@ const SignUpPage: FC = () => {
   return (
     <div className="flex flex-col justify-center items-center">
       <div className="mb-10">
-        <p className="text-4xl text-bold">회원가입</p>
+        <p className="text-4xl font-bold">회원가입</p>
       </div>
 
       <section className="mb-10 px-5 py-3 rounded-md bg-amber-200 ">
@@ -78,7 +78,7 @@ const SignUpPage: FC = () => {
         onClick={signUpHandler}
         disabled={!isValidToSubmit}
       >
-        <p className="text-bold text-xl text-white">회원가입 하기</p>
+        <p className="font-bold text-xl text-white">회원가입 하기</p>
       </button>
     </div>
   );

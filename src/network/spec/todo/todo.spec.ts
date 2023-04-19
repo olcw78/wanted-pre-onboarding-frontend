@@ -22,11 +22,11 @@ export const todoSpec = {
       }
     },
     updateTodo: {
-      url: (id: string) => `/todos/${id}`,
+      url: (id: number) => `/todos/${id}`,
       method: "PUT"
     },
     deleteTodo: {
-      url: (id: string) => `/todos/:${id}`,
+      url: (id: number) => `/todos/${id}`,
       method: "DELETE",
       headers: {
         Authorization: (accessToken: string) => `Bearer ${accessToken}`

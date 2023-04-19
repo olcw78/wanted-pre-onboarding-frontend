@@ -25,7 +25,7 @@ const Nav: FC = () => {
           {navItems.map((navItem) => (
             <li key={navItem.path}>
               <Link to={navItem.path}>
-                <p className="text-white text-xl text-bold">{navItem.name}</p>
+                <p className="text-white text-xl font-bold">{navItem.name}</p>
               </Link>
             </li>
           ))}

@@ -1,6 +1,6 @@
 import type { AxiosInstance, AxiosRequestConfig } from "axios";
 import axios, { type CreateAxiosDefaults } from "axios";
-import { axiosMiddleware } from "./middleware";
+import { axiosMiddleware } from "./httpClient.middleware";
 
 class HttpClient {
   //#region fields
@@ -41,7 +41,7 @@ class HttpClient {
   }
 
   public get accessToken(): string | null {
-    return localStorage.getItem("accessToken");
+    return localStorage.getItem("access-token");
   }
 
   //#endregion accessors

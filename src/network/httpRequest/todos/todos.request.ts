@@ -9,6 +9,9 @@ import { httpClient } from "../../httpClient/httpClient";
 import { API_SPEC } from "../../spec";
 
 export class TodosRequestStatic {
+  /* prevent ctor */
+  private TodosRequestStatic() {}
+
   public static async createTodo({
     todo
   }: CreateTodoModelBody): Promise<CreateTodoModelResponse> {
@@ -24,7 +27,7 @@ export class TodosRequestStatic {
     return await httpClient.get<{}, GetTodosModelResponse>(url);
   }
 
-  public static async deleteTodo(id: string): Promise<void> {
+  public static async deleteTodo(id: number): Promise<void> {
     const { url } = API_SPEC.todos.deleteTodo;
     await httpClient.delete(url(id));
   }
@@ -34,7 +37,7 @@ export class TodosRequestStatic {
     todo,
     isCompleted
   }: UpdateTodoModelBody & {
-    id: string;
+    id: number;
   }): Promise<UpdateTodoModelResponse> {
     const { url } = API_SPEC.todos.updateTodo;
     return await httpClient.put<UpdateTodoModelBody, UpdateTodoModelResponse>(
@@ -42,7 +45,4 @@ export class TodosRequestStatic {
       { todo, isCompleted }
     );
   }
-
-  /* prevent ctor */
-  private static TodosRequestStatic() {}
 }

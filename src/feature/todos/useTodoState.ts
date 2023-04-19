@@ -1,102 +1,162 @@
-import { ChangeEventHandler, useEffect, useRef, useState } from "react";
+import {
+  type Dispatch,
+  type SetStateAction,
+  useCallback,
+  useEffect,
+  useRef,
+  useState
+} from "react";
 import type { TodoModel } from "network/spec/todo/model/TodoModel";
+import { TodosRequestStatic } from "../../network/httpRequest/todos/todos.request";
 
-const DUMMY_TODOS: Array<TodoModel> = [
-  {
-    id: 1,
-    todo: "Learn React",
-    isCompleted: false,
-    userId: 1
-  },
-  {
-    id: 2,
-    todo: "Learn Redux",
-    isCompleted: false,
-    userId: 2
-  },
-  {
-    id: 3,
-    todo: "Learn Node",
-    isCompleted: true,
-    userId: 3
-  }
-];
-
-export const useTodoState = () => {
-  const [todos, setTodos] = useState<Array<TodoModel>>(DUMMY_TODOS);
+export const useTodoState = (
+  newTodoInput: string,
+  setNewTodoInput: Dispatch<SetStateAction<string>>
+) => {
+  const [todos, setTodos] = useState<Array<TodoModel>>([]);
+  const [isFetching, setFetching] = useState(false);
   const newTodoInputRef = useRef<HTMLInputElement>(null);
-  const [newTodoInput, setNewTodoInput] = useState("");
 
+  // 페이지 열면 인풋 필드로 focus.
   useEffect(() => {
     newTodoInputRef?.current?.focus();
   }, [newTodoInputRef]);
 
-  const updateNewTodoInput: ChangeEventHandler<HTMLInputElement> = (event) => {
-    setNewTodoInput(event.target.value);
-  };
+  useEffect(() => {
+    (async () => {
+      try {
+        setFetching(true);
 
-  const toggleHandler = (id: number) => {
-    const foundIdx = todos.findIndex((todo) => todo.id === id);
-    if (foundIdx === -1) {
-      return;
+        const response = await TodosRequestStatic.getTodos();
+        setTodos(response);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setFetching(false);
+      }
+    })();
+  }, []);
+
+  const toggleHandler = useCallback(
+    async (id: number) => {
+      const foundIdx = todos.findIndex((todo) => todo.id === id);
+      if (foundIdx === -1) {
+        return;
+      }
+
+      const targetTodo = todos[foundIdx];
+      try {
+        setFetching(true);
+
+        const updatedLocalTodo = await TodosRequestStatic.updateTodo({
+          id,
+          todo: targetTodo.todo,
+          isCompleted: !targetTodo.isCompleted
+        });
+
+        // local todos 갱신.
+        setTodos([
+          ...todos.slice(0, foundIdx),
+          {
+            ...targetTodo,
+            ...updatedLocalTodo
+          },
+          ...todos.slice(foundIdx + 1)
+        ]);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setFetching(false);
+      }
+    },
+    [todos]
+  );
+
+  const addNewTodoHandler = async () => {
+    try {
+      setFetching(true);
+
+      const newLocalTodo = await TodosRequestStatic.createTodo({
+        todo: newTodoInput
+      });
+
+      // 새 todo local 리스트에 추가.
+      setTodos([...todos, newLocalTodo]);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setFetching(false);
+
+      // 인풋필드 정리.
+      setNewTodoInput("");
+      newTodoInputRef?.current?.focus();
     }
-
-    setTodos([
-      ...todos.slice(0, foundIdx),
-      {
-        ...todos[foundIdx],
-        isCompleted: !todos[foundIdx].isCompleted
-      },
-      ...todos.slice(foundIdx + 1)
-    ]);
   };
 
-  const addNewTodoHandler = () => {
-    const newTodo = {
-      id: todos.length + 1,
-      todo: newTodoInput,
-      isCompleted: false,
-      userId: 1
-    };
+  const editTodoHandler = useCallback(
+    async (id: number, newTodo: string) => {
+      const foundIdx = todos.findIndex((todo) => todo.id === id);
+      if (foundIdx === -1) {
+        return;
+      }
 
-    setTodos([...todos, newTodo]);
-    setNewTodoInput("");
+      try {
+        setFetching(true);
+        const targetTodo = todos[foundIdx];
+        const updatedLocalTodo = await TodosRequestStatic.updateTodo({
+          id,
+          todo: newTodo,
+          isCompleted: targetTodo.isCompleted
+        });
 
-    newTodoInputRef?.current?.focus();
-  };
+        // 갱신한 todo 로 local todolist 설정.
+        setTodos([
+          ...todos.slice(0, foundIdx),
+          {
+            ...targetTodo,
+            ...updatedLocalTodo
+          },
+          ...todos.slice(foundIdx + 1)
+        ]);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setFetching(false);
+      }
+    },
+    [todos]
+  );
 
-  const editTodoHandler = (id: number, newTodo: string) => {
-    const foundIdx = todos.findIndex((todo) => todo.id === id);
-    if (foundIdx === -1) {
-      return;
-    }
+  const deleteTodoHandler = useCallback(
+    async (id: number) => {
+      const foundIdx = todos.findIndex((todo) => todo.id === id);
+      if (foundIdx === -1) {
+        return;
+      }
 
-    setTodos([
-      ...todos.slice(0, foundIdx),
-      {
-        ...todos[foundIdx],
-        todo: newTodo
-      },
-      ...todos.slice(foundIdx + 1)
-    ]);
-  };
+      try {
+        setFetching(true);
 
-  const deleteTodoHandler = (id: number) => {
-    const foundIdx = todos.findIndex((todo) => todo.id === id);
-    if (foundIdx === -1) {
-      return;
-    }
+        await TodosRequestStatic.deleteTodo(id);
 
-    setTodos([...todos.slice(0, foundIdx), ...todos.slice(foundIdx + 1)]);
-  };
+        // local todos 에서 삭제.
+        setTodos([...todos.slice(0, foundIdx), ...todos.slice(foundIdx + 1)]);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setFetching(false);
+      }
+    },
+    [todos]
+  );
 
   return {
     todos,
 
+    isFetching,
+
     newTodoInput,
     newTodoInputRef,
-
-    updateNewTodoInput,
 
     addNewTodoHandler,
     editTodoHandler,

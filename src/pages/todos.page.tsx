@@ -1,28 +1,31 @@
 import type { FC } from "react";
+import { type ChangeEventHandler, useState } from "react";
 import TodoItem from "../feature/todos/TodoItem";
 import { useTodoState } from "../feature/todos/useTodoState";
 
 const TodosPage: FC = () => {
+  const [newTodoInput, setNewTodoInput] = useState("");
+  const updateNewTodoInput: ChangeEventHandler<HTMLInputElement> = (event) => {
+    setNewTodoInput(event.target.value);
+  };
+
   const {
     todos,
-
-    newTodoInput,
+    isFetching,
     newTodoInputRef,
-
-    updateNewTodoInput,
 
     addNewTodoHandler,
     editTodoHandler,
     toggleHandler,
     deleteTodoHandler
-  } = useTodoState();
+  } = useTodoState(newTodoInput, setNewTodoInput);
 
   if (process.env.NODE_ENV === "development") {
     console.log(todos);
   }
 
   return (
-    <div className="flex flex-col justify-center">
+    <div className="flex flex-col flex-1 justify-center min-h-full">
       <section className="mb-5 bg-slate-200 px-5 py-3 rounded-md mx-auto">
         {/* 새 Todo 항목 인풋 필드 */}
         <input
@@ -41,22 +44,31 @@ const TodosPage: FC = () => {
           className="bg-slate-600 px-3 py-1 rounded-md"
           onClick={addNewTodoHandler}
         >
-          <span className="text-white text-bold text-xl">추가</span>
+          <span className="text-white font-bold text-xl">추가</span>
         </button>
       </section>
 
       {/* 현재 Todo 항목들 iterate & render */}
+      {!isFetching && todos.length === 0 && (
+        <div className="bg-pink-200 rounded-md px-3 py-2 flex justify-center items-center h-[100px]">
+          <p className="text-2xl text-slate-600 font-bold">
+            현재 Todo 항목이 없습니다!
+          </p>
+        </div>
+      )}
+
       <ul>
-        {todos?.map((todo) => (
-          <TodoItem
-            key={todo.id}
-            onToggleCompleted={toggleHandler}
-            onEditTodo={editTodoHandler}
-            onDeleteTodo={deleteTodoHandler}
-            className="my-2"
-            {...todo}
-          />
-        ))}
+        {!isFetching &&
+          todos?.map((todo) => (
+            <TodoItem
+              key={todo.id}
+              onToggleCompleted={toggleHandler}
+              onEditTodo={editTodoHandler}
+              onDeleteTodo={deleteTodoHandler}
+              className="my-2 overflow-hidden"
+              {...todo}
+            />
+          ))}
       </ul>
     </div>
   );

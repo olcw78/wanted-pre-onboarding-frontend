@@ -56,7 +56,7 @@ const SignInPage: FC = () => {
   return (
     <div className="flex flex-col justify-center items-center">
       <div className="mb-10">
-        <p className="text-4xl text-bold">로그인</p>
+        <p className="text-4xl font-bold">로그인</p>
       </div>
 
       <section className="mb-10 px-5 py-3 rounded-md bg-amber-200">
@@ -84,7 +84,7 @@ const SignInPage: FC = () => {
         onClick={signInHandler}
         disabled={!isValidToSubmit}
       >
-        <p className="text-bold text-xl text-white">로그인 하기</p>
+        <p className="font-bold text-xl text-white">로그인 하기</p>
       </button>
     </div>
   );

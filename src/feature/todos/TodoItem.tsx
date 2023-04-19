@@ -53,7 +53,7 @@ const TodoItem: FC<TodoItemProps> = ({
 
         {/* todo / edit todo input */}
         {!isEditMode ? (
-          <span className="text-2xl text-bold text-slate-700 w-[250px]">
+          <span className="text-2xl font-bold text-slate-700 w-[250px]">
             {todo}
           </span>
         ) : (

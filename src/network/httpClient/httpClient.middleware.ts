@@ -1,7 +1,7 @@
 import { EHTTPStatusCode } from "./enum/EHTTPStatusCode";
 import type { InternalAxiosRequestConfig } from "axios";
 
-class Middleware {
+class HttpClientMiddleware {
   public matchHTTPStatusErrors(err: any) {
     const { status } = err;
 
@@ -34,6 +34,10 @@ class Middleware {
     cfg: InternalAxiosRequestConfig
   ) {
     try {
+      if (process.env.NODE_ENV === "development") {
+        console.log("injecting token", accessToken);
+      }
+
       if (accessToken) {
         cfg.headers.Authorization = `Bearer ${accessToken}`;
       }
@@ -45,4 +49,4 @@ class Middleware {
   }
 }
 
-export const axiosMiddleware = new Middleware();
+export const axiosMiddleware = new HttpClientMiddleware();

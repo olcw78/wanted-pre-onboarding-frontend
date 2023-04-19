@@ -7,6 +7,9 @@ import type {
 import { API_SPEC } from "../../spec";
 
 export class AuthRequestStatic {
+  /* prevent ctor */
+  private AuthRequestStatic() {}
+
   public static async signIn(
     email: string,
     password: string
