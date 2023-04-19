@@ -1,97 +1,25 @@
-import type { ChangeEventHandler, FC } from "react";
-import { useEffect, useRef, useState } from "react";
-import type { TodoModel } from "../network/spec/todo/model/TodoModel";
+import type { FC } from "react";
 import TodoItem from "../feature/todos/TodoItem";
+import { useTodoState } from "../feature/todos/useTodoState";
 
 const TodosPage: FC = () => {
-  const [todos, setTodos] = useState<Array<TodoModel>>([
-    {
-      id: 1,
-      todo: "Learn React",
-      isCompleted: false,
-      userId: 1
-    },
-    {
-      id: 2,
-      todo: "Learn Redux",
-      isCompleted: false,
-      userId: 2
-    },
-    {
-      id: 3,
-      todo: "Learn Node",
-      isCompleted: true,
-      userId: 3
-    }
-  ]);
+  const {
+    todos,
 
-  const newTodoInputRef = useRef<HTMLInputElement>(null);
-  const [newTodoInput, setNewTodoInput] = useState("");
+    newTodoInput,
+    newTodoInputRef,
 
-  useEffect(() => {
-    newTodoInputRef?.current?.focus();
-  }, [newTodoInputRef]);
+    updateNewTodoInput,
 
-  const updateNewTodoInput: ChangeEventHandler<HTMLInputElement> = (event) => {
-    setNewTodoInput(event.target.value);
-  };
+    addNewTodoHandler,
+    editTodoHandler,
+    toggleHandler,
+    deleteTodoHandler
+  } = useTodoState();
 
-  const toggleHandler = (id: number) => {
-    const foundIdx = todos.findIndex((todo) => todo.id === id);
-    if (foundIdx === -1) {
-      return;
-    }
-
-    setTodos([
-      ...todos.slice(0, foundIdx),
-      {
-        ...todos[foundIdx],
-        isCompleted: !todos[foundIdx].isCompleted
-      },
-      ...todos.slice(foundIdx + 1)
-    ]);
-  };
-
-  const addNewTodoHandler = () => {
-    const newTodo = {
-      id: todos.length + 1,
-      todo: newTodoInput,
-      isCompleted: false,
-      userId: 1
-    };
-
-    setTodos([...todos, newTodo]);
-    setNewTodoInput("");
-
-    newTodoInputRef?.current?.focus();
-  };
-
-  const editTodoHandler = (id: number, newTodo: string) => {
-    const foundIdx = todos.findIndex((todo) => todo.id === id);
-    if (foundIdx === -1) {
-      return;
-    }
-
-    setTodos([
-      ...todos.slice(0, foundIdx),
-      {
-        ...todos[foundIdx],
-        todo: newTodo
-      },
-      ...todos.slice(foundIdx + 1)
-    ]);
-  };
-
-  const deleteTodoHandler = (id: number) => {
-    const foundIdx = todos.findIndex((todo) => todo.id === id);
-    if (foundIdx === -1) {
-      return;
-    }
-
-    setTodos([...todos.slice(0, foundIdx), ...todos.slice(foundIdx + 1)]);
-  };
-
-  console.log(todos);
+  if (process.env.NODE_ENV === "development") {
+    console.log(todos);
+  }
 
   return (
     <div className="flex flex-col justify-center">
@@ -119,7 +47,7 @@ const TodosPage: FC = () => {
 
       {/* 현재 Todo 항목들 iterate & render */}
       <ul>
-        {todos?.map((todo, i) => (
+        {todos?.map((todo) => (
           <TodoItem
             key={todo.id}
             onToggleCompleted={toggleHandler}
